@@ -1,0 +1,14 @@
+{application, monadic,
+ [
+  {description, "An Erlang monadic library"},
+  {vsn, "1"},
+  {modules, [
+             monadic
+            ]},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {env, []}
+ ]}.
