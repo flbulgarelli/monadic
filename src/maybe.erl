@@ -12,26 +12,27 @@
   flatten/1,
   flat_map/2]).
 
+-define(OK(V), {_, V}).
+
 ok(V) -> {ok, V}.
 
-is_ok({ok, _}) -> true;
+is_ok(?OK(_)) -> true;
 is_ok(_) -> false.
 
-is_error(error) -> true;
-is_error(_) -> false.
+is_error(Maybe) -> not is_ok(Maybe).
 
-get({ok, V}) -> V.
+get(?OK(V)) -> V.
 
-get_or_else(_, {ok, V}) -> V;
+get_or_else(_, ?OK(V)) -> V;
 get_or_else(V, _) -> V.
 
-or_else(_, {ok, V}) -> ok(V);
+or_else(_, ?OK(V)) -> ok(V);
 or_else(V, _) -> ok(V).
 
-map(Fun, {ok, V}) -> ok(Fun(V));
+map(Fun, ?OK(V)) -> ok(Fun(V));
 map(_, _) -> error.
 
-filter(Fun, {ok, V}) ->
+filter(Fun, ?OK(V)) ->
   case Fun(V) of
     true -> ok(V);
     false -> error
@@ -39,8 +40,8 @@ filter(Fun, {ok, V}) ->
 filter(_, _) -> error.
 
 
-flatten({ok, {ok, V}}) -> ok(V);
+flatten(?OK(?OK(V))) -> ok(V);
 flatten(_) -> error.
 
-flat_map(Fun, {ok, V}) -> Fun(V);
+flat_map(Fun, ?OK(V)) -> Fun(V);
 flat_map(_, _) -> error.
